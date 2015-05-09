@@ -10,11 +10,11 @@ Drivers represent, possibly aggregated, devices like an Arduino with multiple se
 
 ### Driver registration
 Drivers should publish and subscribe to:
-<location>/drivers/registry
+\<location\>/drivers/registry
 
 ### Driver topics
 All of the topics are with the following "topic space":
-<location>/<driver_name>
+\<location\>/\<driver_name\>
 
 #### In and Outgoing messages and Failures
 Messages to be processed by the driver should end in the topic ".../in", while the driver will push its messages on ".../out". If incoming messages couldn't be processed or something else went wrong, the driver should publish a message on ".../log".
