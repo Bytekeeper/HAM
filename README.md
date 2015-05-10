@@ -9,7 +9,7 @@ Shorthand for sensors/actors: entity
 ### Message Format
 JSON:
 ```json
-{ "type" : \<type\>, "aspect" : \<aspect name\>...}
+{ "type" : <type>, "aspect" : <aspect name>...}
 ```
 ### Message Types
 
@@ -17,7 +17,7 @@ JSON:
 As outgoing message: Sets the color of a an aspect of an entity.
 As incoming message: Color state of the aspect of an entity.
 ```json
-{ "type" : "Color", "aspect" : "\<aspect name \>", "red" : "0-65535", "green" : "0-65535", "blue" : "0-65535" }
+{ "type" : "Color", "aspect" : "<aspect name>", "red" : "0-65535", "green" : "0-65535", "blue" : "0-65535" }
 ```
 
 For example:
