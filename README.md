@@ -1,6 +1,10 @@
 # HAM
 
-MQTT based Home Automation.
+MQTT based Home Automation. The focus of HAM is to provide an abstraction of sensors and actors, and yet remain close to the metal. To reach this goal devices a split into aspect with capabilities, without loosing the information that those aspects might work in tandem.
+
+A night light for example might have a LED and a motion sensor. Both have different capabilities. They also obviously operate together.
+
+HAM devices aren't meant to be necessarily stupid. It's quiet sensible to have even small devices carry out some logic without querying some controller, to provide basic functionality even in case of a communication outage. The motion sensor from above performs its basic function without uplink. But it could also be triggered from a motion sensor in another room.
 
 Shorthand for sensors/actors: entity
 
