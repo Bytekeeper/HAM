@@ -69,3 +69,9 @@ Messages to be processed by the driver should end in the topic ".../in", while t
 
 #### Sensors and Actors
 They should generally use the topic "<location>/<driver_name>/<entity_name>". Some entities can have multiple aspects, for example a colored light with automatic dimmer (like bkbedlight) has a "color", a "fade in duration", a "fade out duration" and a "light duration". These are embedded in the messages themselves.
+
+# Advanced
+## Automatic discovery of drivers and MQTT brokers
+## Controllers
+## UI interfaces
+They are basically just controllers, but might incorporate driver aspect (ie. for notifications).
