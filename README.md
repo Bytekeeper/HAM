@@ -14,8 +14,8 @@ JSON:
 ### Message Types
 
 ##### Color
-As outgoing message: Sets the color of a an aspect of an entity.
-As incoming message: Color state of the aspect of an entity.
+Message to driver: Sets the color of a an aspect of an entity.
+Message from driver: Color state of the aspect of an entity.
 ```json
 { "type" : "Color", "aspect" : "<aspect name>", "red" : "0-65535", "green" : "0-65535", "blue" : "0-65535" }
 ```
@@ -28,10 +28,26 @@ For example:
 The driver is responsible for converting RGB back and forth between the actual hardware (if the acutal hardware uses a yellow LED, the driver performs the mixing of red + green)
 
 ##### Trigger
+Message to driver: Triggers an aspect on an entity
+Message from driver: An aspect was triggered on the hardware (ie. motion sensor)
+```json
+{ "type" : "Trigger", "aspect" : "<aspect name>" }
+```
 
 ##### Switch
+Message to driver: Switches an aspect of an entity on or off
+Message from driver: An aspect was switched on or off (ie. a hardware switch, a light)
+```json
+{ "type" : "Switch", "aspect" : "<aspect name>", "state": "on/off" }
+```
 
 ##### Duration
+Message to driver: Configures the duration of an aspect (ie. how long the floor light should stay on)
+Message from driver: A duration measured by a sensor
+```json
+{ "type" : "Duration", "aspect" : "<aspect name>", "duration" : "<n>" }
+```
+where \<n\> is given in seconds (ie. 0.5 for half a second).
 
 ## Driver basics
 Drivers represent, possibly aggregated, devices like an Arduino with multiple sensors.
