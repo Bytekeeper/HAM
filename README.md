@@ -68,7 +68,7 @@ All of the topics are with the following "topic space":
 Messages to be processed by the driver should end in the topic ".../in", while the driver will push its messages on ".../out". If incoming messages couldn't be processed or something else went wrong, the driver should publish a message on ".../log".
 
 #### Sensors and Actors
-They should generally use the topic "<location>/<driver_name>/<entity_name>". Some entities can have multiple aspects, for example a colored light with automatic dimmer (like bkbedlight) has a "color", a "fade in duration", a "fade out duration" and a "light duration". These are embedded in the messages themselves.
+They should generally use the topic "\<location\>/\<driver_name\>/\<entity_name\>". Some entities can have multiple aspects, for example a colored light with automatic dimmer (like bkbedlight) has a "color", a "fade in duration", a "fade out duration" and a "light duration". These are embedded in the messages themselves.
 
 # Advanced
 ## Automatic discovery of drivers and MQTT brokers
