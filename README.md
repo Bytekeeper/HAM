@@ -1,10 +1,10 @@
 # HAM
 
-MQTT based Home Automation. The focus of HAM is to provide an abstraction of sensors and actors, and yet remain close to the metal. To reach this goal devices a split into aspect with capabilities, without loosing the information that those aspects might work in tandem.
+MQTT based Home Automation. The focus of HAM is to provide an abstraction of sensors and actors, and yet remain close to the metal. To reach this goal devices are split into aspects with capabilities, without loosing the information that those aspects might work in tandem.
 
 A night light for example might have a LED and a motion sensor. Both have different capabilities. They also obviously operate together.
 
-HAM devices aren't meant to be necessarily stupid. It's quiet sensible to have even small devices carry out some logic without querying some controller, to provide basic functionality even in case of a communication outage. The motion sensor from above performs its basic function without uplink. But it could also be triggered from a motion sensor in another room.
+HAM devices aren't meant to be necessarily stupid. It's quite sensible to have even small devices carry out some logic without querying some controller, to provide basic functionality even in case of a communication outage. The motion sensor from above performs its basic function without uplink. But it could also be triggered from a motion sensor in another room.
 
 Shorthand for sensors/actors: entity
 
@@ -75,3 +75,19 @@ They should generally use the topic "\<location\>/\<driver_name\>/\<entity_name\
 ## Controllers
 ## UI interfaces
 They are basically just controllers, but might incorporate driver aspect (ie. for notifications).
+
+# Installation
+To get started, you just need an MQTT broker and Java8. [Mosquitto](http://mosquitto.org/) for example works well as MQTT broker.
+
+HAM runs well on Raspberry Pi. To install, just execute the command:
+```
+sudo apt-get install mosquitto oracle-java8-jdk
+```
+
+Now clone this repository and build it
+```
+git clone https://github.com/Bytekeeper/HAM.git
+cd HAM/Drivers
+./gradlew build
+```
+Find the compiled .jar in build/libs of the actual driver subdirectories
