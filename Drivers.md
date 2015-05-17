@@ -39,3 +39,6 @@ Queries and adds events on the google calendar.
 
 ## KodiDriver
 Triggers events based on actions performed in Kodi like: Movie paused, switch on light
+
+## EmailDriver
+Sends and receives emails.
