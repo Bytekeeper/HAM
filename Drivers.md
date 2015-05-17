@@ -8,10 +8,13 @@ This driver controls an RGB stripe and a motion sensor
 This driver receives temperature, humidity, athmospheric pressure and voltage readings from different sensors. The received values are published to the bus.
 
 ## OnkyoDriver
-Connects to Onkyo receivers to control and query them
+Connects to Onkyo receivers to control and query them.
+
+## PioneerDriver
+Connetcs to Pioneer receivers to contron and query them.
 
 ## FritzboxDriver
-Fetches status from a Fritz Box like currently connected devices in the network an WIFI. Connects over UPNP/Soap to Fritz Box
+Fetches status from a Fritz Box like currently connected devices in the network an WIFI. Connects over UPNP/Soap to Fritz Box.
 
 ## DataLoggerDriver
 Persists data and can be queried for the persisted data later on.
