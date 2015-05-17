@@ -34,5 +34,8 @@ Sends out events based on configured times, dates, intervals
 ## CalDavDriver
 Queries a CalDav server like Owncloud and triggers events based on calendar entries
 
+## GoogleCalenderDriver
+Queries and adds events on the google calendar.
+
 ## KodiDriver
 Triggers events based on actions performed in Kodi like: Movie paused, switch on light
