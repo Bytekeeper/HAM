@@ -1,4 +1,5 @@
 rootProject.name = 'DriversRoot'
+include 'common'
 include 'BKBedlightDriver'
 //include 'OnkyoDriver'
 //include 'TemperatureDriver'

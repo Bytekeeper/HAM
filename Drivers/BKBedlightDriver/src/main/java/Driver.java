@@ -2,11 +2,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.paho.client.mqttv3.*;
-import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.ham.Connector;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -17,7 +15,7 @@ import java.util.logging.Logger;
 /**
  * Created by dante on 05.05.15.
  */
-public class Driver implements MqttCallback {
+public class Driver implements MqttCallback, org.ham.Driver {
     private static final Logger LOG = Logger.getLogger(Driver.class.getName());
     public static final String COLOR = "Color";
     public static final String TRIGGER = "Trigger";
@@ -34,42 +32,15 @@ public class Driver implements MqttCallback {
     public static final byte TYPE_SWITCH = 2;
     public static final byte TYPE_SETTINGS = (byte) 200;
 
-    public Driver(MqttClient mqttClient) {
-        this.mqttClient = mqttClient;
-    }
-
 
     public static void main(String[] args) throws InterruptedException, IOException {
-        String broker = "tcp://192.168.0.18:1883";
-        String clientId = "BedlightDriver";
+        Connector connector = new Connector();
+        connector.startFromCommandline(args, "BedlightDriver", new Driver());
+    }
 
-        try {
-            final MqttClient mqttClient = new MqttClient(broker, clientId, new MemoryPersistence());
-            mqttClient.setTimeToWait(1000);
-            MqttConnectOptions connOpts = new MqttConnectOptions();
-            connOpts.setCleanSession(true);
-            LOG.info("Connecting to broker: " + broker);
-            mqttClient.connect(connOpts);
-            LOG.info("Connected");
-            Driver driver = new Driver(mqttClient);
-            mqttClient.setCallback(driver);
-            driver.start();
-            LOG.info("Press enter to exit");
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(System.in))) {
-                in.readLine();
-            }
-            LOG.info("Exiting");
-            mqttClient.disconnect();
-            mqttClient.close();
-        } catch (MqttException me) {
-            System.out.println("reason " + me.getReasonCode());
-            System.out.println("msg " + me.getMessage());
-            System.out.println("loc " + me.getLocalizedMessage());
-            System.out.println("cause " + me.getCause());
-            System.out.println("excep " + me);
-            me.printStackTrace();
-        }
-
+    @Override
+    public void setup(MqttClient mqttClient) {
+        this.mqttClient = mqttClient;
     }
 
     public void start() throws MqttException {

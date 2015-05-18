@@ -24,7 +24,6 @@ subprojects {
   jar {
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     manifest.attributes("Main-Class":"org.ham.Driver")
-    manifest.attributes("JavaFX-Feature-Proxy":"None")
     //exlcudes necessary for Java8 security:
     exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
   }
@@ -38,3 +37,8 @@ tasks.withType(FindBugs) {
 */
 }
 
+project(':BKBedlightDriver') {
+    dependencies {
+        compile project(':common')
+    }
+}
