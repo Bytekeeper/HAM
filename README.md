@@ -17,9 +17,18 @@ JSON:
 ```
 ### Message Types
 
+##### "Transactions"
+TBD!!
+
+Message to driver: Activate pending config changes
+```json
+{ "type" : "Activate" }
+{ "type" : "Start" }
+```
+
 ##### Color
 Message to driver: Sets the color of a an aspect of an entity.
-Message from driver: Color state of the aspect of an entity.
+Message from driver: Color state of the aspect of an entity or sensed color from a sensor.
 ```json
 { "type" : "Color", "aspect" : "<aspect name>", "red" : "0-65535", "green" : "0-65535", "blue" : "0-65535" }
 ```
@@ -63,6 +72,8 @@ Drivers should publish and subscribe to:
 ### Driver topics
 All of the topics are with the following "topic space":
 \<location\>/\<driver_name\>
+
+Only driver specific messages should be sent there (ie. "activate").
 
 #### In and Outgoing messages and Failures
 Messages to be processed by the driver should end in the topic ".../in", while the driver will push its messages on ".../out". If incoming messages couldn't be processed or something else went wrong, the driver should publish a message on ".../log".
