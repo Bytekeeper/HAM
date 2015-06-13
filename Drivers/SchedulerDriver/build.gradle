@@ -1,0 +1,18 @@
+
+jar {
+    manifest.attributes("Main-Class":"org.ham.SchedulerDriver")
+}
+repositories {
+    maven {
+        url "https://caldav4j.googlecode.com/svn/maven/"
+    }
+}
+dependencies {
+    compile 'org.quartz-scheduler:quartz:2.2.1'
+    compile 'org.mnode.ical4j:ical4j:1.0.6'
+    compile 'xalan:serializer:2.7.1'
+    compile ('org.osaf:caldav4j:0.7') { 
+      exclude module: 'ical4j'
+      exclude module: 'serializer' 
+    }
+}

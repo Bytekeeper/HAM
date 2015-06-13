@@ -10,9 +10,7 @@ subprojects {
   sourceCompatibility = 1.8
   repositories {
     mavenCentral()
-    maven {
-      url "https://repo.eclipse.org/content/repositories/paho-releases/"
-    }
+    maven { url "https://repo.eclipse.org/content/repositories/paho-releases/" }
   }
   dependencies {
     compile "org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.0.2"
@@ -23,7 +21,7 @@ subprojects {
   }
   jar {
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    manifest.attributes("Main-Class":"org.ham.Driver")
+    //manifest.attributes("Main-Class":"$mainClassName")
     //exlcudes necessary for Java8 security:
     exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
   }
@@ -38,6 +36,11 @@ tasks.withType(FindBugs) {
 }
 
 project(':BKBedlightDriver') {
+    dependencies {
+        compile project(':common')
+    }
+}
+project(':SchedulerDriver') {
     dependencies {
         compile project(':common')
     }
