@@ -51,6 +51,11 @@ public class Driver implements MqttCallback, org.ham.Driver {
     }
 
     @Override
+    public void stop() {
+        
+    }
+
+    @Override
     public void connectionLost(Throwable throwable) {
 
     }

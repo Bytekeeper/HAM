@@ -10,4 +10,6 @@ public interface Driver {
     void setup(MqttClient mqttClient);
 
     void start() throws MqttException;
+
+    void stop();
 }

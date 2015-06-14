@@ -16,38 +16,38 @@ import org.osaf.caldav4j.methods.CalDAV4JMethodFactory;
 import org.osaf.caldav4j.methods.HttpClient;
 import org.osaf.caldav4j.model.request.CalendarQuery;
 import org.osaf.caldav4j.util.GenerateQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.logging.Logger;
+
 
 /**
  * Queries a CalDav server (e.g. OwnCloud) for events
  */
-public class CalDavHolidayCheck {
+public class CalDavCheck {
 
-    private static final Logger LOG = Logger.getLogger(CalDavHolidayCheck.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(CalDavCheck.class);
 
-    private static final String HOST = "192.168.2.3";
-    private static final String PROTOCOL = "https";
-    private static final int PORT = 443;
-    private static final String USERNAME = "android";
-    private static final String PASSWORD = "XXXX";
-    private static String CALENDAR_URL = PROTOCOL + "://" + HOST + "/remote.php/caldav/calendars/android/arbeit";
-    private static String HOLIDAY_DESC = "Urlaub";
+    private final CalDavSettings settings;
 
-    public boolean isHolidayNow() throws CalDAV4JException {
+    public CalDavCheck(CalDavSettings settings) {
+        this.settings = settings;
+    }
+
+    public boolean matchesNow(String calendarSummary) throws CalDAV4JException {
         HttpClient httpClient = new HttpClient();
-        httpClient.getHostConfiguration().setHost(HOST, PORT, PROTOCOL);
+//        httpClient.getHostConfiguration().setHost(HOST, PORT, PROTOCOL);
 
-        UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(USERNAME, PASSWORD);
+        UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(settings.USERNAME, settings.PASSWORD);
         httpClient.getState().setCredentials(AuthScope.ANY, credentials);
 
-        CalDAVCollection collection = new CalDAVCollection(CALENDAR_URL, (HostConfiguration) httpClient.getHostConfiguration().clone(),
+        CalDAVCollection collection = new CalDAVCollection(settings.CALENDAR_URL, (HostConfiguration) httpClient.getHostConfiguration().clone(),
                 new CalDAV4JMethodFactory(), CalDAVConstants.PROC_ID_DEFAULT);
 
         int status = collection.testConnection(httpClient);
         if( status != HttpStatus.SC_OK) {
-            LOG.warning("Could not connect to calendar server. Status: " + status);
+            LOG.error("Could not connect to calendar server. Status: " + status);
         }
         GenerateQuery query = new GenerateQuery();
 
@@ -63,7 +63,7 @@ public class CalDavHolidayCheck {
                 Date endDate = event.getEndDate().getDate();
                 String summary = event.getSummary().getValue();
                 Date now = new Date();
-                if(startDate.before(now) && endDate.after(now) && summary.equalsIgnoreCase(HOLIDAY_DESC))
+                if(startDate.before(now) && endDate.after(now) && summary.equalsIgnoreCase(calendarSummary))
                 {
                     return true;
                 }

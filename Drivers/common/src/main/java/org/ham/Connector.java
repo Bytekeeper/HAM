@@ -40,6 +40,7 @@ public class Connector {
             LOG.info("Exiting");
             mqttClient.disconnect();
             mqttClient.close();
+            driver.stop();
         } catch (MqttException me) {
             System.out.println("reason " + me.getReasonCode());
             System.out.println("msg " + me.getMessage());

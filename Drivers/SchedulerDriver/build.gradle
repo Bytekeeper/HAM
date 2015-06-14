@@ -9,6 +9,7 @@ repositories {
 }
 dependencies {
     compile 'org.quartz-scheduler:quartz:2.2.1'
+    compile 'org.slf4j:slf4j-simple:1.7.12'
     compile 'org.mnode.ical4j:ical4j:1.0.6'
     compile 'xalan:serializer:2.7.1'
     compile ('org.osaf:caldav4j:0.7') { 
