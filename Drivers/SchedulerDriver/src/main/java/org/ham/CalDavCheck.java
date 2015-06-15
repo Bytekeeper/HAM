@@ -29,20 +29,13 @@ public class CalDavCheck {
 
     private static final Logger LOG = LoggerFactory.getLogger(CalDavCheck.class);
 
-    private final CalDavSettings settings;
-
-    public CalDavCheck(CalDavSettings settings) {
-        this.settings = settings;
-    }
-
-    public boolean matchesNow(String calendarSummary) throws CalDAV4JException {
+    public boolean matchesNow(CalDavSettings settings) throws CalDAV4JException {
         HttpClient httpClient = new HttpClient();
-//        httpClient.getHostConfiguration().setHost(HOST, PORT, PROTOCOL);
 
-        UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(settings.USERNAME, settings.PASSWORD);
+        UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(settings.username, settings.password);
         httpClient.getState().setCredentials(AuthScope.ANY, credentials);
 
-        CalDAVCollection collection = new CalDAVCollection(settings.CALENDAR_URL, (HostConfiguration) httpClient.getHostConfiguration().clone(),
+        CalDAVCollection collection = new CalDAVCollection(settings.calendarUrl, (HostConfiguration) httpClient.getHostConfiguration().clone(),
                 new CalDAV4JMethodFactory(), CalDAVConstants.PROC_ID_DEFAULT);
 
         int status = collection.testConnection(httpClient);
@@ -63,7 +56,7 @@ public class CalDavCheck {
                 Date endDate = event.getEndDate().getDate();
                 String summary = event.getSummary().getValue();
                 Date now = new Date();
-                if(startDate.before(now) && endDate.after(now) && summary.equalsIgnoreCase(calendarSummary))
+                if(startDate.before(now) && endDate.after(now) && summary.equalsIgnoreCase(settings.calendarSummary))
                 {
                     return true;
                 }

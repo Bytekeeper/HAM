@@ -38,9 +38,9 @@ public class Connector {
                 in.readLine();
             }
             LOG.info("Exiting");
+            driver.stop();
             mqttClient.disconnect();
             mqttClient.close();
-            driver.stop();
         } catch (MqttException me) {
             System.out.println("reason " + me.getReasonCode());
             System.out.println("msg " + me.getMessage());

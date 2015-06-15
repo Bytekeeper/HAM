@@ -20,30 +20,36 @@ public class MqttQuartzJob implements Job {
 
     private static final Logger LOG = LoggerFactory.getLogger(MqttQuartzJob.class);
 
-    private final MqttClient mqttClient;
-
     public static final String JOB_OUT_TOPIC_KEY = "jobOutTopic";
     public static final String JOB_MESSAGE_KEY = "jobMessage";
     public static final String CALENDAR_SUMMARY_KEY = "calendarSummary";
+
     private final CalDavCheck calDavCheck;
+    private final MqttClient mqttClient;
+
+    private CalDavSettings settings;
 
     public MqttQuartzJob(MqttClient mqttClient, CalDavCheck calDavCheck)
     {
         this.mqttClient = mqttClient;
         this.calDavCheck = calDavCheck;
+
+        settings = new CalDavSettings();
     }
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
 
+
         String jobMessage = (String) context.getJobDetail().getJobDataMap().get(JOB_MESSAGE_KEY);
         String outTopic = (String) context.getJobDetail().getJobDataMap().get(JOB_OUT_TOPIC_KEY);
         String calendarSummary = (String) context.getJobDetail().getJobDataMap().get(CALENDAR_SUMMARY_KEY);
+        settings.calendarSummary = calendarSummary;
 
-        LOG.info("executing job. Topic=" + outTopic + ", message=" + jobMessage);
-        //check if we should run
+        LOG.debug("executing job. Topic=" + outTopic + ", message=" + jobMessage);
         try {
-            if (calendarSummary == null || !calDavCheck.matchesNow(calendarSummary)) {
+            //check if we should run
+            if (calendarSummary == null || !calDavCheck.matchesNow(settings)) {
                 mqttClient.publish(outTopic, new MqttMessage(jobMessage.getBytes("UTF-8")));
             }
         } catch (CalDAV4JException | UnsupportedEncodingException | MqttException e) {

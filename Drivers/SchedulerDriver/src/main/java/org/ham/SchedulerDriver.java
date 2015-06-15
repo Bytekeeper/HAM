@@ -33,23 +33,24 @@ public class SchedulerDriver implements MqttCallback, org.ham.Driver {
     @Override
     public void setup(MqttClient mqttClient) {
         this.mqttClient = mqttClient;
-    }
-
-    @Override
-    public void start() throws MqttException {
 
         SchedulerFactory sf = new StdSchedulerFactory();
         try {
             scheduler = sf.getScheduler();
-            JobFactory myJobFactory = (bundle, scheduler1) -> new MqttQuartzJob(mqttClient, new CalDavCheck(new CalDavSettings()));
+            JobFactory myJobFactory = (bundle, scheduler1) -> new MqttQuartzJob(mqttClient, new CalDavCheck());
             scheduler.setJobFactory(myJobFactory);
             scheduler.start();
         } catch (SchedulerException e) {
             LOG.error("Error creating scheduler", e);
         }
+    }
 
-        scheduleNewJob("0/10 * * * * ?", OUT_TOPIC, "the message", "Urlaub");
+    @Override
+    public void start() throws MqttException {
 
+        for(QuartzJobConfig.JobConfig config : new QuartzJobConfig().getJobs()) {
+            scheduleNewJob(config.cron, config.topic, config.message, config.calendarSummary);
+        }
         LOG.info("setup of scheduler complete");
     }
 
@@ -67,6 +68,7 @@ public class SchedulerDriver implements MqttCallback, org.ham.Driver {
                     withSchedule(CronScheduleBuilder.cronSchedule(expression)).
                     build();
             scheduler.scheduleJob(job, trigger);
+            LOG.info("Scheduled job " + job.getKey() + ", next run time: " + trigger.getNextFireTime());
         } catch (SchedulerException | ParseException e) {
             LOG.error("Error setting up scheduler", e);
         }

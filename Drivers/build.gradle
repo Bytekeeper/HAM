@@ -1,5 +1,5 @@
 version = '1.0'
-
+apply plugin: 'java'
 subprojects {
   apply plugin: 'java'
 /*
@@ -34,6 +34,20 @@ tasks.withType(FindBugs) {
 }
 */
 }
+
+subprojects.each {subproject -> evaluationDependsOn(subproject.path)}
+task oneJar( type: Jar, dependsOn: subprojects.assemble) {
+    baseName = 'all-in-one'
+    subprojects.each {subproject ->
+        from subproject.configurations.archives.allArtifacts.files.collect {
+            zipTree(it)
+        }
+    }
+}
+artifacts {
+    archives oneJar
+}
+
 
 project(':BKBedlightDriver') {
     dependencies {
